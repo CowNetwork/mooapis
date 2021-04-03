@@ -1,10 +1,9 @@
 #!/bin/bash
 BUF_VERSION=0.41.0
-CACHE_BASE=$HOME/.cache
-CACHE_BIN=$CACHE_BASE/bin
+CACHE=$HOME/.cache/bin
 
-export PATH=$PATH:$CACHE_BIN
-export GOBIN=$CACHE_BIN
+export PATH=$PATH:$CACHE
+export GOBIN=$CACHE
 
 mkdir -p "$CACHE_BIN"
 
