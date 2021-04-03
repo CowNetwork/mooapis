@@ -5,10 +5,10 @@ package cow.indigo.v1;
 option go_package = "github.com/cownetwork/indigo/v1;indigo";
 
 service IndigoService {
-    rpc GetRole (GetRoleRequest) returns (Role) {
+    rpc GetRole (GetRoleRequest) returns (GetRoleResponse) {
     }
 
-    rpc InsertRole (Role) returns (InsertRoleResponse) {
+    rpc InsertRole (InsertRoleRequest) returns (InsertRoleResponse) {
     }
 
     rpc AddRolePermission (AddRolePermissionRequest) returns (AddRolePermissionResponse) {
@@ -39,6 +39,14 @@ service IndigoService {
 
 message GetRoleRequest {
     string role_id = 1;
+}
+
+message GetRoleResponse {
+    Role role = 1;
+}
+
+message InsertRoleRequest {
+    Role role = 1;
 }
 
 message InsertRoleResponse {
