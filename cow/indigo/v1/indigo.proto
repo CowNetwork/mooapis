@@ -4,6 +4,7 @@ package cow.indigo.v1;
 
 option go_package = "github.com/cownetwork/indigo/v1;indigo";
 
+// Service definition
 service IndigoService {
     rpc GetRole (GetRoleRequest) returns (GetRoleResponse) {
     }
