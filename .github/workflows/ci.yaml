@@ -20,3 +20,31 @@ jobs:
         run: |
           buf lint
           buf breaking --against '.git#branch=main'
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - run: git checkout main
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.16
+      - name: install-buf
+        run: |
+          chmod +x install-buf.sh
+          ./install-buf.sh
+      - name: buf generate
+        run: buf generate
+      - name: Commit files
+        run: |
+          git config --local user.email "machine@cow.network"
+          git config --local user.name "github-udder-machine"
+          git commit -m "Add changes" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
+          branch: ${{ github.ref }}
+          repository: cownetwork/mooapis-go
