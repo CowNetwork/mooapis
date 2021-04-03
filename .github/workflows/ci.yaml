@@ -39,7 +39,7 @@ jobs:
       - name: Install protoc-gen-go
         run: |
           export GO111MODULE=on
-          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+          go get google.golang.org/protobuf/cmd/protoc-gen-go google.golang.org/grpc/cmd/protoc-gen-go-grpc
       - name: buf generate
         run: buf generate
       - name: Commit files
