@@ -18,5 +18,7 @@ jobs:
           ./install-buf.sh
       - name: buf lint && buf breaking
         run: |
+          ls -al $HOME/.cache/bin
+          echo $PATH
           buf lint
           buf breaking --against '.git#branch=main'
