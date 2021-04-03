@@ -26,7 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
         with:
-          persist-credentials: false
           fetch-depth: 0
       - run: git checkout main
       - uses: actions/setup-go@v1
@@ -43,15 +42,20 @@ jobs:
           echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
       - name: buf generate
         run: buf generate
+      - name: Clone repo
+        run: |
+          cd ./gen
+          git clone https://github.com/CowNetwork/mooapis-go.git
       - name: Commit files
         run: |
           git config --local user.email "machine@cow.network"
           git config --local user.name "github-udder-machine"
-          git add ./gen
           git commit -m "Add changes"
+        working-directory: ./gen
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
           branch: ${{ github.ref }}
+          directory: ./gen
           repository: cownetwork/mooapis-go
