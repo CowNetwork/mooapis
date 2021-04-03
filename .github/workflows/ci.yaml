@@ -42,15 +42,15 @@ jobs:
           echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
       - name: buf generate
         run: buf generate
-      - name: Prepare repo
+      - name: Prepare Go repo
         run: |
           git clone https://github.com/CowNetwork/mooapis-go.git
-          cp -a ./gen/. ./mooapis-go/ 
+          cp -a ./gen/go/. ./mooapis-go/ 
           cd ./mooapis-go/
           git config --local user.email "machine@cow.network"
           git config --local user.name "github-udder-machine"
           git add .
-          git commit -m "Add changes"
+          git commit -m "Generate Go files"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
