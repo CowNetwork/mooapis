@@ -61,3 +61,4 @@ jobs:
           branch: main
           directory: ./mooapis-go
           repository: cownetwork/mooapis-go
+          tags: true
