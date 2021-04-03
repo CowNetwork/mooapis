@@ -50,6 +50,7 @@ jobs:
         run: |
           git config --local user.email "machine@cow.network"
           git config --local user.name "github-udder-machine"
+          git add ./
           git commit -m "Add changes"
         working-directory: ./gen
       - name: Push changes
