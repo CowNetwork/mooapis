@@ -16,9 +16,7 @@ jobs:
         run: |
           chmod +x install-buf.sh
           ./install-buf.sh
-      - name: buf lint && buf breaking
+      - name: buf lint
         run: |
-          ls -al $HOME/.cache/bin
-          echo $PATH
           buf lint
           buf breaking --against '.git#branch=main'
