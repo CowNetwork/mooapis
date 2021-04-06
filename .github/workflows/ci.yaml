@@ -33,7 +33,11 @@ jobs:
           go-version: 1.16
       - name: Set RELEASE_VERSION env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: install-buf
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v1
+        with:
+          version: '3.x'
+      - name: Install buf
         run: |
           chmod +x install-buf.sh
           ./install-buf.sh
@@ -42,6 +46,10 @@ jobs:
           export GO111MODULE=on
           go get google.golang.org/protobuf/cmd/protoc-gen-go google.golang.org/grpc/cmd/protoc-gen-go-grpc
           echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+      - name: Install protoc-gen-java
+        run: |
+          chmod +x install-java-grpc.sh
+          ./install-java-grpc.sh
       - name: buf generate
         run: buf generate
       - name: Prepare Go repo
