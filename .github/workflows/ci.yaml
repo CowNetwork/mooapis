@@ -20,7 +20,7 @@ jobs:
         run: |
           buf lint
           buf breaking --against '.git#branch=main'
-  build:
+  build-go:
     runs-on: ubuntu-latest
     needs: lint
     steps:
@@ -54,11 +54,53 @@ jobs:
           git add .
           git commit -m "Generate Go files for $RELEASE_VERSION"
           git tag $RELEASE_VERSION
-      - name: Push changes
+      - name: Push Go files
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
           branch: main
           directory: ./mooapis-go
           repository: cownetwork/mooapis-go
+          tags: true
+  build-java:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+      - run: git checkout main
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.16
+      - name: Set RELEASE_VERSION env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: install-buf
+        run: |
+          chmod +x install-buf.sh
+          ./install-buf.sh
+      - name: Install protoc-gen-java
+        run: |
+          export GO111MODULE=on
+          go get google.golang.org/protobuf/cmd/protoc-gen-go google.golang.org/grpc/cmd/protoc-gen-go-grpc
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+      - name: buf generate
+        run: buf generate
+      - name: Prepare Java repo
+        run: |
+          git clone https://github.com/CowNetwork/mooapis-java.git
+          cp -a ./gen/java/. ./mooapis-java/ 
+          cd ./mooapis-java/
+          git config --local user.email "machine@cow.network"
+          git config --local user.name "github-udder-machine"
+          git add .
+          git commit -m "Generate Java files for $RELEASE_VERSION"
+          git tag $RELEASE_VERSION
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
+          branch: main
+          directory: ./mooapis-java
+          repository: cownetwork/mooapis-java
           tags: true

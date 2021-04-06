@@ -6,3 +6,9 @@ plugins:
   - name: go-grpc
     out: gen/go
     opt: paths=source_relative,require_unimplemented_servers=false
+  - name: java
+    out: gen/java
+    opt: paths=source_relative
+  - name: java-grpc
+    out: gen/java
+    opt: paths=source_relative,require_unimplemented_servers=false
