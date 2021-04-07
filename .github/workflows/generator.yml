@@ -1,8 +1,7 @@
-name: CI
+name: generator
 on:
-  push:
-    tags:
-      - '*.*.*'
+  release:
+    types: [created]
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -12,22 +11,21 @@ jobs:
       - uses: actions/setup-go@v1
         with:
           go-version: 1.16
-      - name: install-buf
+      - name: Install requirements
         run: |
-          chmod +x install-buf.sh
-          ./install-buf.sh
+          chmod +x install-requirements.sh
+          sh install-requirements.sh
       - name: buf lint
         run: |
           buf lint
           buf breaking --against '.git#branch=main'
-  build-go:
+  generate-go:
     runs-on: ubuntu-latest
     needs: lint
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 0
-      - run: git checkout main
       - uses: actions/setup-go@v1
         with:
           go-version: 1.16
@@ -37,19 +35,10 @@ jobs:
         uses: arduino/setup-protoc@v1
         with:
           version: '3.x'
-      - name: Install buf
+      - name: Install requirements
         run: |
-          chmod +x install-buf.sh
-          ./install-buf.sh
-      - name: Install protoc-gen-go
-        run: |
-          export GO111MODULE=on
-          go get google.golang.org/protobuf/cmd/protoc-gen-go google.golang.org/grpc/cmd/protoc-gen-go-grpc
-          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
-      - name: Install protoc-gen-java
-        run: |
-          chmod +x install-java-grpc.sh
-          ./install-java-grpc.sh
+          chmod +x install-requirements.sh
+          sh install-requirements.sh
       - name: buf generate
         run: buf generate
       - name: Prepare Go repo
@@ -60,9 +49,9 @@ jobs:
           git config --local user.email "machine@cow.network"
           git config --local user.name "github-udder-machine"
           git add .
-          git commit -m "Generate Go files for $RELEASE_VERSION"
+          git diff-index --quiet HEAD || git commit -m "Generate Go files for $RELEASE_VERSION"
           git tag $RELEASE_VERSION
-      - name: Push Go files
+      - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
@@ -70,14 +59,13 @@ jobs:
           directory: ./mooapis-go
           repository: cownetwork/mooapis-go
           tags: true
-  build-java:
+  generate-java:
     runs-on: ubuntu-latest
     needs: lint
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 0
-      - run: git checkout main
       - uses: actions/setup-go@v1
         with:
           go-version: 1.16
@@ -87,25 +75,20 @@ jobs:
         uses: arduino/setup-protoc@v1
         with:
           version: '3.x'
-      - name: Install buf
+      - name: Install requirements
         run: |
-          chmod +x install-buf.sh
-          ./install-buf.sh
-      - name: Install protoc-gen-go
-        run: |
-          export GO111MODULE=on
-          go get google.golang.org/protobuf/cmd/protoc-gen-go google.golang.org/grpc/cmd/protoc-gen-go-grpc
-          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
-      - name: Install protoc-gen-java
-        run: |
-          chmod +x install-java-grpc.sh
-          ./install-java-grpc.sh
+          chmod +x install-requirements.sh
+          sh install-requirements.sh
       - name: buf generate
         run: buf generate
+      - name: Apply Java template
+        run: |
+          chmod +x apply-java-template.sh
+          sh apply-java-template.sh "./gen/java" "./template/java/"
       - name: Prepare Java repo
         run: |
           git clone https://github.com/CowNetwork/mooapis-java.git
-          cp -a ./gen/java/. ./mooapis-java/ 
+          cp -a ./gen/java/. ./mooapis-java/
           cd ./mooapis-java/
           git config --local user.email "machine@cow.network"
           git config --local user.name "github-udder-machine"

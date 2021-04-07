@@ -3,15 +3,10 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>network.cow</groupId>
-        <artifactId>mooapis</artifactId>
-        <version>{{ .Env.PARENT_VERSION }}</version>
-    </parent>
 
     <groupId>network.cow.mooapis</groupId>
-    <artifactId>{{ .Env.ARTIFACT_ID }}</artifactId>
-    <version>{{ .Env.VERSION }}</version>
+    <artifactId>{{ .Env.MOOAPIS_SERVICE_NAME }}</artifactId>
+    <version>{{ .Env.MOOAPIS_SERVICE_VERSION }}</version>
 
     <organization>
         <name>Cow Network</name>
@@ -51,5 +46,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>cow</id>
+            <name>Cow Network Packages</name>
+            <url>https://maven.cow.network/releases</url>
+        </repository>
+    </distributionManagement>
 
 </project>
