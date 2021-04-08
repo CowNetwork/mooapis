@@ -16,11 +16,9 @@ bufBuildFolder="$1"
 templateFolder="$2"
 targetFolder="$3"
 
-cp -r "$bufBuildFolder/." "$targetFolder"
-
 # Loop to get leaf folder
-echo "Find services in folder $targetFolder"
-for dir in $(find "$targetFolder" -type d -regex '.*v[0-9]+'); do
+echo "Find services in folder $bufBuildFolder"
+for dir in $(find "$bufBuildFolder" -type d -regex '.*v[0-9]+'); do
     parentDir="$(dirname "$dir")"
 
     parentDirName="$(basename "$parentDir")"
@@ -29,15 +27,19 @@ for dir in $(find "$targetFolder" -type d -regex '.*v[0-9]+'); do
     export MOOAPIS_SERVICE_NAME="$parentDirName"
     export MOOAPIS_SERVICE_VERSION="$dirName"
 
+    serviceFolder="$targetFolder/$parentDirName/$dirName"
+    mkdir -p "$serviceFolder"
+    cp -r "$dir/." "$serviceFolder"
+
     # Create /src/ folder with generated .java files
-    srcFolder="$dir/src/main/java/network/cow/mooapis/$parentDirName/$dirName/"
+    srcFolder="$serviceFolder/src/main/java/network/cow/mooapis/$parentDirName/$dirName/"
     mkdir -p "$srcFolder"
-    mv "$dir"/*.* "$srcFolder"
+    mv "$serviceFolder"/*.* "$srcFolder"
 
     # Copy and apply templates
-    cp -r "$templateFolder/." "$dir"
-    gomplate --input-dir "$dir" --output-dir="$dir"
-    for file in $(find "$dir" -regex '.*.tmpl'); do
+    cp -r "$templateFolder/." "$serviceFolder"
+    gomplate --input-dir "$serviceFolder" --output-dir="$serviceFolder"
+    for file in $(find "$serviceFolder" -regex '.*.tmpl'); do
         mv "$file" "$(echo "$file" | sed s/.tmpl/''/)"
     done
 
