@@ -26,4 +26,4 @@ done
 echo "Install protoc-gen-go and protoc-gen-go-grpc ..."
 export GO111MODULE=on
 go get "$PROTOC_GEN_GO_URL" "$PROTOC_GEN_GO_GRPC_URL"
-echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"

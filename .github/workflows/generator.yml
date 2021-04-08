@@ -14,7 +14,7 @@ jobs:
       - name: Install requirements
         run: |
           chmod +x install-requirements.sh
-          sh install-requirements.sh
+          ./install-requirements.sh
       - name: buf lint
         run: |
           buf lint
@@ -38,7 +38,7 @@ jobs:
       - name: Install requirements
         run: |
           chmod +x install-requirements.sh
-          sh install-requirements.sh
+          ./install-requirements.sh
       - name: buf generate
         run: buf generate
       - name: Prepare Go repo
@@ -78,13 +78,13 @@ jobs:
       - name: Install requirements
         run: |
           chmod +x install-requirements.sh
-          sh install-requirements.sh
+          ./install-requirements.sh
       - name: buf generate
         run: buf generate
       - name: Apply Java template
         run: |
           chmod +x apply-java-template.sh
-          sh apply-java-template.sh "./gen/java" "./template/java/" "./gen/java"
+          ./apply-java-template.sh "./gen/java" "./template/java/" "./gen/java"
       - name: Prepare Java repo
         run: |
           git clone https://github.com/CowNetwork/mooapis-java.git
