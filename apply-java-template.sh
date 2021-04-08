@@ -16,7 +16,7 @@ bufBuildFolder="$1"
 templateFolder="$2"
 targetFolder="$3"
 
-cp -a "$bufBuildFolder/." "$targetFolder"
+cp -r "$bufBuildFolder/." "$targetFolder"
 
 # Loop to get leaf folder
 echo "Find services in folder $targetFolder"
@@ -29,8 +29,17 @@ for dir in $(find "$targetFolder" -type d -regex '.*v[0-9]+'); do
     export MOOAPIS_SERVICE_NAME="$parentDirName"
     export MOOAPIS_SERVICE_VERSION="$dirName"
 
-    cp -a "$templateFolder/." "$dir"
+    # Create /src/ folder with generated .java files
+    srcFolder="$dir/src/main/java/network/cow/mooapis/$parentDirName/$dirName/"
+    mkdir -p "$srcFolder"
+    mv "$dir"/*.* "$srcFolder"
 
-    gomplate --input-dir "$dir" --output-dir "$dir"
+    # Copy and apply templates
+    cp -r "$templateFolder/." "$dir"
+    gomplate --input-dir "$dir" --output-dir="$dir"
+    for file in $(find "$dir" -regex '.*.tmpl'); do
+        mv "$file" "$(echo "$file" | sed s/.tmpl/''/)"
+    done
+
     echo "Found $MOOAPIS_SERVICE_NAME with version $MOOAPIS_SERVICE_VERSION"
 done

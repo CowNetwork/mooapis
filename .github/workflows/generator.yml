@@ -84,7 +84,7 @@ jobs:
       - name: Apply Java template
         run: |
           chmod +x apply-java-template.sh
-          sh apply-java-template.sh "./gen/java" "./template/java/"
+          sh apply-java-template.sh "./gen/java" "./template/java/" "./gen/java"
       - name: Prepare Java repo
         run: |
           git clone https://github.com/CowNetwork/mooapis-java.git
