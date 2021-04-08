@@ -16,7 +16,7 @@ bufBuildFolder="$1"
 templateFolder="$2"
 targetFolder="$3"
 
-# Loop to get leaf folder
+# Loop to get leaf folders with version tag as name (like 'v1')
 echo "Find services in folder $bufBuildFolder"
 for dir in $(find "$bufBuildFolder" -type d -regex '.*v[0-9]+'); do
     parentDir="$(dirname "$dir")"
@@ -30,6 +30,9 @@ for dir in $(find "$bufBuildFolder" -type d -regex '.*v[0-9]+'); do
     serviceFolder="$targetFolder/$parentDirName/$dirName"
     mkdir -p "$serviceFolder"
     cp -r "$dir/." "$serviceFolder"
+
+    # Remove unused files from buf.build generation now
+    rm -r "$dir"
 
     # Create /src/ folder with generated .java files
     srcFolder="$serviceFolder/src/main/java/network/cow/mooapis/$parentDirName/$dirName/"
