@@ -54,7 +54,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
+          github_token: ${{ secrets.UDDER_MACHINE_ACCESS_TOKEN }}
           branch: main
           directory: ./mooapis-go
           repository: cownetwork/mooapis-go
@@ -98,7 +98,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.BOT_ACCESS_TOKEN }}
+          github_token: ${{ secrets.UDDER_MACHINE_ACCESS_TOKEN  }}
           branch: main
           directory: ./mooapis-java
           repository: cownetwork/mooapis-java
