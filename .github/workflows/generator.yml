@@ -1,4 +1,4 @@
-name: generator
+name: Generate code from Protobuf definitions
 on:
   release:
     types: [created]
