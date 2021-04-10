@@ -1,0 +1,22 @@
+message Instance {
+    string id = 1;
+    string name = 2;
+    string ip = 3;
+    enum State {
+        INITIALIZING = 0;
+	RUNNING = 1;
+	ENDING = 2;
+    }
+    State state = 4;
+    Metadata metadata = 5;
+}
+
+message Metadata {
+    string state = 1;
+    repeated Player players = 2;
+}
+
+message Player {
+    string id = 1;
+    string Metadata = 2;
+}

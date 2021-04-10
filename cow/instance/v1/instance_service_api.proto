@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message CreateInstanceRequest {
+
+}
+
+message CreateInstanceResponse {
+
+}
+
+message DeleteInstanceRequest {
+
+}
+
+message DeleteInstanceResponse {
+
+}
