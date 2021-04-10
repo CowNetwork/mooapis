@@ -1,0 +1,22 @@
+name: linting
+on:
+  push:
+    branches-ignore:
+      - main
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: git checkout main
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.16
+      - name: Install requirements
+        run: |
+          chmod +x install-requirements.sh
+          ./install-requirements.sh
+      - name: buf lint
+        run: |
+          buf lint
+          buf breaking --against '.git#branch=main'
