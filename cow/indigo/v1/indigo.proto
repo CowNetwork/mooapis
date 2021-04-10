@@ -129,3 +129,7 @@ message Role {
     string color = 4;
     repeated string permissions = 5;
 }
+
+enum cock_Ass {
+    ID = 0;
+}
