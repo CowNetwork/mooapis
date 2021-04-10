@@ -1,5 +1,11 @@
 syntax = "proto3"
 
+package cow.instance.v1
+
+option go_package = "github.com/cownetwork/instance/v1;instance"
+option java_package = "network.cow.mooapis.instance.v1"
+option java_multiple_files = true;
+
 message Instance {
     // Unique id of the instance
     string id = 1;
