@@ -1,6 +1,6 @@
-syntax = "proto3"
+syntax = "proto3";
 
-package cow.instance.v1
+package cow.instance.v1;
 
 option go_package = "github.com/cownetwork/instance/v1;instance";
 option java_package = "network.cow.mooapis.instance.v1";
@@ -16,9 +16,10 @@ message Instance {
     // The IP address the instance is reachable on
     string ip = 3;
     enum State {
-        INITIALIZING = 0;
-        RUNNING = 1;
-        ENDING = 2;
+        STATE_UNKNOWN = 0;
+	STATE_INITIALIZING = 1;
+        STATE_RUNNING = 2;
+        STATE_ENDING = 3;
     }
 
     // Current state of the instance
