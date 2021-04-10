@@ -17,8 +17,8 @@ message Instance {
     string ip = 3;
     enum State {
         INITIALIZING = 0;
-	RUNNING = 1;
-	ENDING = 2;
+        RUNNING = 1;
+        ENDING = 2;
     }
 
     // Current state of the instance
