@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package cow.instance.v1;
 
+import "cow/instance/v1/types.proto";
+
 option go_package = "github.com/cownetwork/instance/v1;instance";
 option java_package = "network.cow.mooapis.instance.v1";
 option java_multiple_files = true;
@@ -42,11 +44,11 @@ message GetInstanceResponse {
 // Currently only CRUD like operations are supported.
 service InstanceService {
     // Create creates a new instance in the cluster
-    rpc Create(CreateInstanceRequest) returns (CreateInstanceResponse)
+    rpc Create(CreateInstanceRequest) returns (CreateInstanceResponse);
     
     // Delete deletes an instance running in the cluster
-    rpc Delete(DeleteInstanceRequest) returns (DeleteInstanceResponse)
+    rpc Delete(DeleteInstanceRequest) returns (DeleteInstanceResponse);
 
     // Get retrieves information about an existing instance
-    rpc Get(GetInstanceRequest) return (GetInstanceResponse)
+    rpc Get(GetInstanceRequest) returns (GetInstanceResponse);
 }
