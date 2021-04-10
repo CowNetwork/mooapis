@@ -19,4 +19,4 @@ jobs:
       - name: buf lint
         run: |
           buf lint
-          buf breaking --against '.git#branch=main'
+          buf breaking
