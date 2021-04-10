@@ -3,14 +3,15 @@ syntax = "proto3";
 package cow.instance.v1;
 
 option go_package = "github.com/cownetwork/instance/v1;instance";
-option java_package "network.cow.mooapis.instance.v1";
+option java_package = "network.cow.mooapis.instance.v1";
 option java_multiple_files = true;
 
 message CreateInstanceRequest {
     // Name the instance should have
     string name = 1;
 
-    // bla
+    // The Kubernetes instance manifest or name of 
+    // a manifest template configured in the service
     string manifest = 2;
 }
 
