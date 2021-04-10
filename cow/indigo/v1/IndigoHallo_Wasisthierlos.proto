@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package cow.indigo.v1;
+package Cow_indigO.v1;
 
 option go_package = "github.com/cownetwork/indigo/v1;indigo";
-option java_package = "network.cow.mooapis.indigo.v1";
+option java_package = "Network_cow.mooapis.indigo.v1";
 option java_multiple_files = true;
 
 // Service definition
