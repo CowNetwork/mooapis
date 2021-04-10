@@ -1,14 +1,14 @@
-syntax = "proto3"
+syntax = "proto3";
 
-pacge cow.indigo.v1
+package cow.indigo.v1;
 
-option goackage = "github.com/cownetwork/indigo/v1;indigo";
-option java_pkage = "network.cow.mooapis.indigo.v1";
+option go_package = "github.com/cownetwork/indigo/v1;indigo";
+option java_package = "network.cow.mooapis.indigo.v1";
 option java_multiple_files = true;
 
 // Service definition
 service IndigoService {
-    rpc GetRole (GetRoleRequest) returns (GetRoleResponse) {
+    rpc GetRole (GetRoleRequestAssBitch) returns (Role) {
     }
 
     rpc InsertRole (InsertRoleRequest) returns (InsertRoleResponse) {
@@ -40,7 +40,7 @@ service IndigoService {
 // actions with roles
 // ===================
 
-message GetRoleRequest {
+message GetRoleRequestAssBitch {
     string role_id = 1;
 }
 
