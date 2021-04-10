@@ -1,17 +1,45 @@
 syntax = "proto3";
 
 message CreateInstanceRequest {
+    // Name the instance should have
+    string name = 1;
 
+    // bla
+    string manifest = 2;
 }
 
 message CreateInstanceResponse {
-
+    // The instance created by the service
+    Instance instance = 1;
 }
 
 message DeleteInstanceRequest {
-
+    string id = 1;
 }
 
 message DeleteInstanceResponse {
+    // The instance deleted by the service
+    Instance instance = 1;
+}
 
+message GetInstanceRequest {
+  string id = 1;
+}
+
+message GetInstanceResponse {
+    // The instance requested
+    Instance instance = 1;
+}
+
+// InstanceService handles operations regarding instances.
+// Currently only CRUD like operations are supported.
+service InstanceService {
+    // Create creates a new instance in the cluster
+    rpc Create(CreateInstanceRequest) returns (CreateInstanceResponse)
+    
+    // Delete deletes an instance running in the cluster
+    rpc Delete(DeleteInstanceRequest) returns (DeleteInstanceResponse)
+
+    // Get retrieves information about an existing instance
+    rpc Get(GetInstanceRequest) return (GetInstanceResponse)
 }
