@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package cow.instance.v1;
+
+option go_package = "github.com/cownetwork/instance/v1;instance";
+option java_package = "network.cow.mooapis.instance.v1";
+option java_multiple_files = true;
+
+message CreateInstanceRequest {
+    // Name the instance should have
+    string name = 1;
+
+    // The Kubernetes instance manifest or name of 
+    // a manifest template configured in the service
+    string manifest = 2;
+}
+
+message CreateInstanceResponse {
+    // The instance created by the service
+    Instance instance = 1;
+}
+
+message DeleteInstanceRequest {
+    string id = 1;
+}
+
+message DeleteInstanceResponse {
+    // The instance deleted by the service
+    Instance instance = 1;
+}
+
+message GetInstanceRequest {
+  string id = 1;
+}
+
+message GetInstanceResponse {
+    // The instance requested
+    Instance instance = 1;
+}
+
+// InstanceService handles operations regarding instances.
+// Currently only CRUD like operations are supported.
+service InstanceService {
+    // Create creates a new instance in the cluster
+    rpc Create(CreateInstanceRequest) returns (CreateInstanceResponse)
+    
+    // Delete deletes an instance running in the cluster
+    rpc Delete(DeleteInstanceRequest) returns (DeleteInstanceResponse)
+
+    // Get retrieves information about an existing instance
+    rpc Get(GetInstanceRequest) return (GetInstanceResponse)
+}

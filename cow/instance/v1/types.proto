@@ -1,0 +1,47 @@
+syntax = "proto3"
+
+package cow.instance.v1
+
+option go_package = "github.com/cownetwork/instance/v1;instance";
+option java_package = "network.cow.mooapis.instance.v1";
+option java_multiple_files = true;
+
+message Instance {
+    // Unique id of the instance
+    string id = 1;
+
+    // Name of the instance, serves only documentational purposes
+    string name = 2;
+
+    // The IP address the instance is reachable on
+    string ip = 3;
+    enum State {
+        INITIALIZING = 0;
+        RUNNING = 1;
+        ENDING = 2;
+    }
+
+    // Current state of the instance
+    State state = 4;
+
+    // Metadata about the instance
+    Metadata metadata = 5;
+}
+
+message Metadata {
+    // The currently observed state. The underlying application
+    // that is running can define this state
+    string state = 1;
+
+    // Players that are currently connected or have been connected to the instance
+    repeated Player players = 2;
+}
+
+message Player {
+    // Unique id of the player
+    string id = 1;
+
+    // Application specific metadata about the player.
+    // The underlying application that is running defines this metadata field
+    string Metadata = 2;
+}
