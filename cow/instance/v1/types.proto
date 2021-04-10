@@ -44,5 +44,5 @@ message Player {
 
     // Application specific metadata about the player.
     // The underlying application that is running defines this metadata field
-    string Metadata = 2;
+    string metadata = 2;
 }
