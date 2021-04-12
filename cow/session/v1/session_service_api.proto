@@ -41,6 +41,14 @@ message StopSessionRequest {
         // The player to stop the session for.
         Player player = 2;
     }
+
+    // The reason why the session is being stopped.
+    oneof cause {
+        StopCauseUnknown unknown = 1;
+        StopCauseDisconnected disconnected = 2;
+        StopCauseError error = 3;
+        StopCauseCustom custom = 4;
+    }
 }
 
 message StopSessionResponse {
@@ -48,14 +56,141 @@ message StopSessionResponse {
     Session session = 1;
 }
 
+message KickPlayerRequest {
+    // The player to kick.
+    Player player = 1;
+
+    // The reason for the kick.
+    string reason = 2;
+
+    // The initiator of the ban.
+    oneof initiator {
+        Player executor_player = 5;
+        string executor_id = 6;
+    }
+}
+
+message KickPlayerResponse {
+    // The resulting kick.
+    Kick kick = 1;
+}
+
+message BanPlayerRequest {
+    // The player to ban.
+    Player player = 1;
+
+    // The reason for the ban.
+    string reason = 2;
+
+    // The unix timestamp of the ban.
+    uint64 banned_at = 3;
+
+    // The duration of this ban in seconds, starting from the banned_at timestamp.
+    int64 duration = 4;
+
+    // The initiator of the ban.
+    oneof initiator {
+        Player executor_player = 5;
+        string executor_id = 6;
+    }
+}
+
+message BanPlayerResponse {
+    // The resulting ban.
+    Ban ban = 1;
+}
+
+message GetBansRequest {
+    // The player to receive ban information for.
+    Player player = 1;
+}
+
+message GetBansResponse {
+    // All bans associated to the given player.
+    repeated Ban bans = 1;
+}
+
+message RevokeBanRequest {
+    // The unique identifier of the ban.
+    string id = 1;
+
+    // The initiator of the ban.
+    oneof initiator {
+        Player executor_player = 2;
+        string executor_id = 3;
+    }
+}
+
+message RevokeBanResponse {
+    // The revoked ban.
+    Ban ban = 1;
+}
+
+message SetMaintenanceModeRequest {
+    // The session types affected by the maintenance mode.
+    repeated string types = 1;
+
+    // Whether the maintenance mode should be enabled for the given types.
+    bool enabled = 2;
+}
+
+message SetMaintenanceModeResponse {
+    // The session types affected by the change.
+    repeated string types = 1;
+}
+
+message BlacklistPlayerRequest {
+    // The player to blacklist.
+    Player player = 1;
+
+    // The message to show the blacklisted player upon connecting.
+    string message = 2;
+}
+
+message BlacklistPlayerResponse {
+    // The resulting blacklist entry.
+    BlacklistEntry entry = 1;
+}
+
+message RevokeBlacklistPlayerRequest {
+    // The player to revoke the blacklist for.
+    Player player = 1;
+}
+
+message RevokeBlacklistPlayerResponse {
+    // The player the blacklist entry has been revoked for.
+    Player player = 1;
+}
+
 // Service definition
 service SessionService {
-    // Create creates a new session
-    rpc Create(CreateSessionRequest) returns (CreateSessionResponse);
+    // creates a new session
+    rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
 
-    // Stop stops and removes a session
-    rpc Stop(StopSessionRequest) returns (StopSessionResponse);
+    // stops and removes a session
+    rpc StopSession(StopSessionRequest) returns (StopSessionResponse);
 
-    // Get retrieves information about a existing session
-    rpc Get(GetSessionRequest) returns (GetSessionResponse);
+    // retrieves information about a existing session
+    rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
+
+    // kicks the given player
+    rpc KickPlayer(KickPlayerRequest) returns (KickPlayerResponse);
+
+    // bans the given player
+    rpc BanPlayer(BanPlayerRequest) returns (BanPlayerResponse);
+
+    // retrieves all bans associated to a player
+    rpc GetBans(GetBansRequest) returns (GetBansResponse);
+
+    // revoke a ban
+    rpc RevokeBan(RevokeBanRequest) returns (RevokeBanResponse);
+
+    // enables or disabled maintenance mode
+    rpc SetMaintenanceMode(SetMaintenanceModeRequest) returns (SetMaintenanceModeResponse);
+
+    // blacklists a player
+    rpc BlacklistPlayer(BlacklistPlayerRequest) returns (BlacklistPlayerResponse);
+
+    // revokes the blacklist entry of a player
+    rpc RevokeBlacklistPlayer(RevokeBlacklistPlayerRequest) returns (RevokeBlacklistPlayerResponse);
 }

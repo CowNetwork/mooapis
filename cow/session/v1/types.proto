@@ -50,6 +50,7 @@ message StateStopped {
         StopCauseKicked kicked = 5;
         StopCauseBanned banned = 6;
         StopCauseBlacklisted blacklisted = 7;
+        StopCauseCustom custom = 8;
     }
 }
 
@@ -76,30 +77,94 @@ message StopCauseError {
 
 // The session stopped because the player has been kicked.
 message StopCauseKicked {
-    // The unique identifier of the underlying kick.
-    string kick_id = 1;
-
-    // The reason of the kick.
-    string reason = 2;
+    // The underlying kick.
+    Kick kick = 1;
 }
 
 // The session stopped because the player is/has been banned.
 message StopCauseBanned {
-    // The unique identifier of the underlying ban.
-    string ban_id = 1;
-
-    // The reason of the ban.
-    string reason = 2;
-
-    // The unix timestamp of the ban.
-    int64 banned_at = 3;
-
-    // The duration of this ban starting from the banned_at timestamp.
-    int64 duration = 4;
+    // The underlying ban.
+    Ban ban = 1;
 }
 
 // The session stopped because the player is/has been blacklisted.
 message StopCauseBlacklisted {
-    // The blacklist message.
+    // The blacklist entry.
+    BlacklistEntry entry = 1;
+}
+
+// The session stopped because of maintenance.
+message StopCauseCustom {
     string message = 1;
+}
+
+message Ban {
+    // The unique identifier of the ban.
+    string id = 1;
+
+    // The banned player.
+    Player player = 2;
+
+    // The reason of the ban.
+    string reason = 3;
+
+    // The unix timestamp of the ban.
+    uint64 banned_at = 4;
+
+    // The duration of this ban in seconds, starting from the banned_at timestamp.
+    int64 duration = 5;
+
+    // The initiator of the ban.
+    oneof initiator {
+        Player executor_player = 6;
+        string executor_id = 7;
+    }
+
+    // The revoke of the ban, if there is one.
+    optional BanRevoke revoke = 8;
+}
+
+message BanRevoke {
+    // The unique identifier of the revoke.
+    string id = 1;
+
+    // The timestamp of the revoke.
+    uint64 revoked_at = 1;
+
+    // The initiator of the revoke.
+    oneof initiator {
+        Player executor_player = 6;
+        string executor_id = 7;
+    }
+}
+
+message Kick {
+    // The unique identifier of the kick.
+    string id = 1;
+
+    // The kicked player.
+    Player player = 2;
+
+    // The reason of the ban.
+    string reason = 3;
+
+    // The unix timestamp of the kick.
+    uint64 kicked_at = 4;
+
+    // The initiator of the kick.
+    oneof initiator {
+        Player executor_player = 5;
+        string executor_id = 6;
+    }
+}
+
+message BlacklistEntry {
+    // The unique identifier of the entry.
+    string id = 1;
+
+    // The blacklisted player.
+    Player player = 2;
+
+    // The message to show the blacklisted player upon connecting.
+    string message = 3;
 }
