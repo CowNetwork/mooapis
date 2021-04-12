@@ -115,13 +115,10 @@ message Ban {
     int64 duration = 5;
 
     // The initiator of the ban.
-    oneof initiator {
-        Player executor_player = 6;
-        string executor_id = 7;
-    }
+    Executor executor = 6;
 
     // The revoke of the ban, if there is one.
-    optional BanRevoke revoke = 8;
+    optional BanRevoke revoke = 7;
 }
 
 message BanRevoke {
@@ -129,13 +126,10 @@ message BanRevoke {
     string id = 1;
 
     // The timestamp of the revoke.
-    uint64 revoked_at = 1;
+    uint64 revoked_at = 2;
 
     // The initiator of the revoke.
-    oneof initiator {
-        Player executor_player = 6;
-        string executor_id = 7;
-    }
+    Executor executor = 3;
 }
 
 message Kick {
@@ -152,10 +146,7 @@ message Kick {
     uint64 kicked_at = 4;
 
     // The initiator of the kick.
-    oneof initiator {
-        Player executor_player = 5;
-        string executor_id = 6;
-    }
+    Executor executor = 5;
 }
 
 message BlacklistEntry {
@@ -167,4 +158,24 @@ message BlacklistEntry {
 
     // The message to show the blacklisted player upon connecting.
     string message = 3;
+}
+
+message SessionIdentifier {
+    oneof identifier {
+        // The id of the session to receive.
+        string id = 1;
+
+        // The player to receive the session for.
+        Player player = 2;
+    }
+}
+
+message Executor {
+    oneof executor {
+        // The globally unique identifier of the executor (e.g. user id).
+        string id = 1;
+
+        // The executing player.
+        Player player = 2;
+    }
 }

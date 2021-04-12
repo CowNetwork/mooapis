@@ -19,13 +19,7 @@ message CreateSessionResponse {
 }
 
 message GetSessionRequest {
-    oneof identifier {
-        // The id of the session to receive.
-        string session_id = 1;
-
-        // The player to receive the session for.
-        Player player = 2;
-    }
+    SessionIdentifier identifier = 1;
 }
 
 message GetSessionResponse {
@@ -34,20 +28,14 @@ message GetSessionResponse {
 }
 
 message StopSessionRequest {
-    oneof identifier {
-        // The id of the session to stop.
-        string session_id = 1;
-
-        // The player to stop the session for.
-        Player player = 2;
-    }
+    SessionIdentifier identifier = 1;
 
     // The reason why the session is being stopped.
     oneof cause {
-        StopCauseUnknown unknown = 1;
-        StopCauseDisconnected disconnected = 2;
-        StopCauseError error = 3;
-        StopCauseCustom custom = 4;
+        StopCauseUnknown unknown = 2;
+        StopCauseDisconnected disconnected = 3;
+        StopCauseError error = 4;
+        StopCauseCustom custom = 5;
     }
 }
 
@@ -64,10 +52,7 @@ message KickPlayerRequest {
     string reason = 2;
 
     // The initiator of the ban.
-    oneof initiator {
-        Player executor_player = 5;
-        string executor_id = 6;
-    }
+    Executor executor = 3;
 }
 
 message KickPlayerResponse {
@@ -89,10 +74,7 @@ message BanPlayerRequest {
     int64 duration = 4;
 
     // The initiator of the ban.
-    oneof initiator {
-        Player executor_player = 5;
-        string executor_id = 6;
-    }
+    Executor executor = 5;
 }
 
 message BanPlayerResponse {
@@ -115,10 +97,7 @@ message RevokeBanRequest {
     string id = 1;
 
     // The initiator of the ban.
-    oneof initiator {
-        Player executor_player = 2;
-        string executor_id = 3;
-    }
+    Executor executor = 2;
 }
 
 message RevokeBanResponse {
