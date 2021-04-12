@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package cow.session.v1;
+
+import "cow/session/v1/types.proto";
+
+option go_package = "github.com/cownetwork/session/v1;session";
+option java_package = "network.cow.mooapis.session.v1";
+option java_multiple_files = true;
+
+message CreateSessionRequest {
+    // The player to create the session for.
+    Player player = 1;
+}
+
+message CreateSessionResponse {
+    // The session created by this service.
+    Session session = 1;
+}
+
+message GetSessionRequest {
+    oneof identifier {
+        // The id of the session to receive.
+        string session_id = 1;
+
+        // The player to receive the session for.
+        Player player = 2;
+    }
+}
+
+message GetSessionResponse {
+    // The requested session.
+    Session session = 1;
+}
+
+message StopSessionRequest {
+    oneof identifier {
+        // The id of the session to stop.
+        string session_id = 1;
+
+        // The player to stop the session for.
+        Player player = 2;
+    }
+}
+
+message StopSessionResponse {
+    // The session that has been stopped (if not already).
+    Session session = 1;
+}
+
+// Service definition
+service SessionService {
+    // Create creates a new session
+    rpc Create(CreateSessionRequest) returns (CreateSessionResponse);
+
+    // Stop stops and removes a session
+    rpc Stop(StopSessionRequest) returns (StopSessionResponse);
+
+    // Get retrieves information about a existing session
+    rpc Get(GetSessionRequest) returns (GetSessionResponse);
+}

@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package cow.session.v1;
+
+option go_package = "github.com/cownetwork/session/v1;session";
+option java_package = "network.cow.mooapis.session.v1";
+option java_multiple_files = true;
+
+message Session {
+    // Unique id of the session.
+    string id = 1;
+
+    // The player this session belongs to.
+    Player player = 2;
+
+    // The current (or last) state of this session.
+    oneof state {
+        StateUnknown unknown = 3;
+        StateInitialized initialized = 4;
+        StateStopped stopped = 5;
+    }
+}
+
+message Player {
+    // The unique identifier of the player, based on the given type.
+    string id = 1;
+
+    // The type the player identifier corresponds to.
+    string type = 2;
+}
+
+// The session is in an unknown state.
+message StateUnknown
+
+// The session has successfully been initialized.
+message StateInitialized
+
+// The session has been stopped.
+message StateStopped {
+    // The reason why the session has been stopped.
+    oneof cause {
+        StopCauseUnknown unknown = 1;
+        StopCauseDisconnected disconnected = 2;
+        StopCauseMaintenance maintenance = 3;
+        StopCauseError error = 4;
+        StopCauseKicked kicked = 5;
+        StopCauseBanned banned = 6;
+        StopCauseBlacklisted blacklisted = 7;
+    }
+}
+
+// The session has stopped because of unknown reasons.
+message StopCauseUnknown
+
+// The session stopped because the player disconnected or has been disconnected.
+message StopCauseDisconnected
+
+// The session stopped because of maintenance.
+message StopCauseMaintenance
+
+// The session stopped due to an error.
+message StopCauseError {
+    // The error message.
+    string message = 1;
+}
+
+// The session stopped because the player has been kicked.
+message StopCauseKicked {
+    // The unique identifier of the underlying kick.
+    string kick_id = 1;
+
+    // The reason of the kick.
+    string reason = 2;
+}
+
+// The session stopped because the player is/has been banned.
+message StopCauseBanned {
+    // The unique identifier of the underlying ban.
+    string ban_id = 1;
+
+    // The reason of the ban.
+    string reason = 2;
+
+    // The unix timestamp of the ban.
+    int64 banned_at = 3;
+
+    // The duration of this ban starting from the banned_at timestamp.
+    int64 duration = 4;
+}
+
+// The session stopped because the player is/has been blacklisted.
+message StopCauseBlacklisted {
+    // The blacklist message.
+    string message = 1;
+}
