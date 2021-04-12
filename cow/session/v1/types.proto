@@ -30,10 +30,14 @@ message Player {
 }
 
 // The session is in an unknown state.
-message StateUnknown
+message StateUnknown {
+    // Nothing to see here.
+}
 
 // The session has successfully been initialized.
-message StateInitialized
+message StateInitialized {
+    // Nothing to see here.
+}
 
 // The session has been stopped.
 message StateStopped {
@@ -50,13 +54,19 @@ message StateStopped {
 }
 
 // The session has stopped because of unknown reasons.
-message StopCauseUnknown
+message StopCauseUnknown {
+    // Nothing to see here.
+}
 
 // The session stopped because the player disconnected or has been disconnected.
-message StopCauseDisconnected
+message StopCauseDisconnected {
+    // Nothing to see here.
+}
 
 // The session stopped because of maintenance.
-message StopCauseMaintenance
+message StopCauseMaintenance {
+    // Nothing to see here.
+}
 
 // The session stopped due to an error.
 message StopCauseError {
