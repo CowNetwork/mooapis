@@ -40,8 +40,7 @@ message GetPlayersResponse {
 
 message UpdatePlayerMetadataRequest {
     string player_id = 1;
-    string username = 2;
-    Metadata metadata = 3;
+    Metadata metadata = 2;
 }
 
 message UpdatePlayerMetadataResponse {
@@ -112,13 +111,12 @@ message Player {
     string id = 1; // random uuid
     string reference_id = 2; // e.g. minecraft uuid
     string reference_type = 3; // e.g. "minecraft"
-    string username = 4; // e.g. minecraft username
 
     // The underlying user id.
-    string user_id = 5;
+    string user_id = 4;
 
     // The metadata assigned to the player.
-    Metadata metadata = 6;
+    Metadata metadata = 5;
 }
 
 // The identifier used to determine which player to return.
@@ -130,6 +128,9 @@ message PlayerIdentifier {
 }
 
 message Metadata {
+    // The username associated to this user/player.
+    optional string username = 1;
+
     // The locale this player uses.
-    string locale = 1;
+    string locale = 2;
 }
