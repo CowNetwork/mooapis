@@ -51,6 +51,11 @@ message GetUserPlayersResponse {
     repeated Player players = 1;
 }
 
+message UpdateUserMetadataRequest {
+    string user_id = 1;
+    Metadata metadata = 2;
+}
+
 // Service definition
 service UserService {
     // Returns the player or creates/updates it.
@@ -71,8 +76,11 @@ service UserService {
     // Returns the players assigned to this user.
     rpc GetUserPlayers(GetUserPlayersRequest) returns (GetUserPlayersResponse);
 
-    // Returns the players assigned to this user.
+    // Updates the metadata and returns the player.
     rpc UpdatePlayerMetadata(UpdatePlayerMetadataRequest) returns (GetPlayerResponse);
+
+    // Updates the metadata and returns the user.
+    rpc UpdateUserMetadata(UpdateUserMetadataRequest) returns (GetUserResponse);
 }
 
 message User {
