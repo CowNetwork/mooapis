@@ -27,7 +27,7 @@ message GetPlayersByIdRequest {
 }
 
 message GetPlayersByIdResponse {
-    Player player = 1;
+    repeated Player players = 1;
 }
 
 message GetPlayersRequest {
