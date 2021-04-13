@@ -12,9 +12,9 @@ message User {
 
 message Player {
     string id = 1; // random uuid
-    string reference_id = 1; // e.g. minecraft uuid
-    string reference_type = 2; // e.g. "minecraft"
-    string username = 3; // e.g. minecraft username
+    string reference_id = 2; // e.g. minecraft uuid
+    string reference_type = 3; // e.g. "minecraft"
+    string username = 4; // e.g. minecraft username
 }
 
 // The identifier used to determine which player to return.
