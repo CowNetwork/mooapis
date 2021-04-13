@@ -40,7 +40,8 @@ message GetPlayersResponse {
 
 message UpdatePlayerMetadataRequest {
     string player_id = 1;
-    Metadata metadata = 2;
+    string username = 2;
+    Metadata metadata = 3;
 }
 
 message UpdatePlayerMetadataResponse {
