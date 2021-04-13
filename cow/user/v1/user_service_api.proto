@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package cow.user.v1;
+
+import "cow/user/v1/types.proto";
+
+option go_package = "github.com/cownetwork/user/v1;user";
+option java_package = "network.cow.mooapis.user.v1";
+option java_multiple_files = true;
+
+message GetPlayerRequest {
+    PlayerIdentifier identifier = 1;
+}
+
+message GetPlayerResponse {
+    Player player = 1;
+}
+
+message GetPlayersRequest {
+    repeated PlayerIdentifier identifiers = 1;
+}
+
+message GetPlayersResponse {
+    repeated Player players = 1;
+}
+
+message GetPlayerUserRequest {
+    PlayerIdentifier identifier = 1;
+}
+
+message GetPlayerUserResponse {
+    User user = 1;
+}
+
+message GetUserRequest {
+    string user_id = 1;
+}
+
+message GetUserResponse {
+    User user = 1;
+}
+
+message GetUserPlayersRequest {
+    string user_id = 1;
+}
+
+message GetUserPlayersResponse {
+    repeated Player players = 2;
+}
+
+// Service definition
+service UserService {
+    // Returns the player or creates/updates it.
+    rpc GetPlayer(GetPlayerRequest) returns (GetPlayerResponse);
+
+    // Returns the players or creates/updates them.
+    rpc GetPlayers(GetPlayersRequest) returns (GetPlayersResponse);
+
+    // Returns the user this player is assigned to.
+    rpc GetPlayerUser(GetPlayerUserRequest) returns (GetPlayerUserResponse);
+
+    // Returns the user by id.
+    rpc GetUser(GetUserRequest) returns (GetUserResponse);
+
+    // Returns the players assigned to this user.
+    rpc GetUserPlayers(GetUserPlayersRequest) returns (GetUserPlayersResponse);
+}

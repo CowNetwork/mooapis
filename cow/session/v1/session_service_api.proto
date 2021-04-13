@@ -10,7 +10,7 @@ option java_multiple_files = true;
 
 message CreateSessionRequest {
     // The player to create the session for.
-    Player player = 1;
+    string player_id = 1;
 }
 
 message CreateSessionResponse {
@@ -46,7 +46,7 @@ message StopSessionResponse {
 
 message KickPlayerRequest {
     // The player to kick.
-    Player player = 1;
+    string player_id = 1;
 
     // The reason for the kick.
     string reason = 2;
@@ -62,7 +62,7 @@ message KickPlayerResponse {
 
 message BanPlayerRequest {
     // The player to ban.
-    Player player = 1;
+    string player_id = 1;
 
     // The reason for the ban.
     string reason = 2;
@@ -84,7 +84,7 @@ message BanPlayerResponse {
 
 message GetBansRequest {
     // The player to receive ban information for.
-    Player player = 1;
+    string player_id = 1;
 }
 
 message GetBansResponse {
@@ -120,7 +120,7 @@ message SetMaintenanceModeResponse {
 
 message BlacklistPlayerRequest {
     // The player to blacklist.
-    Player player = 1;
+    string player_id = 1;
 
     // The message to show the blacklisted player upon connecting.
     string message = 2;
@@ -133,12 +133,12 @@ message BlacklistPlayerResponse {
 
 message RevokeBlacklistPlayerRequest {
     // The player to revoke the blacklist for.
-    Player player = 1;
+    string player_id = 1;
 }
 
 message RevokeBlacklistPlayerResponse {
     // The player the blacklist entry has been revoked for.
-    Player player = 1;
+    string player_id = 1;
 }
 
 // Service definition

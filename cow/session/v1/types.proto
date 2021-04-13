@@ -11,7 +11,7 @@ message Session {
     string id = 1;
 
     // The player this session belongs to.
-    Player player = 2;
+    string player_id = 2;
 
     // The current (or last) state of this session.
     oneof state {
@@ -19,14 +19,8 @@ message Session {
         StateInitialized initialized = 4;
         StateStopped stopped = 5;
     }
-}
 
-message Player {
-    // The unique identifier of the player, based on the given type.
-    string id = 1;
-
-    // The type the player identifier corresponds to.
-    string type = 2;
+    string ip = 6;
 }
 
 // The session is in an unknown state.
@@ -103,7 +97,7 @@ message Ban {
     string id = 1;
 
     // The banned player.
-    Player player = 2;
+    string player_id = 2;
 
     // The reason of the ban.
     string reason = 3;
@@ -137,7 +131,7 @@ message Kick {
     string id = 1;
 
     // The kicked player.
-    Player player = 2;
+    string player_id = 2;
 
     // The reason of the ban.
     string reason = 3;
@@ -154,7 +148,7 @@ message BlacklistEntry {
     string id = 1;
 
     // The blacklisted player.
-    Player player = 2;
+    string player_id = 2;
 
     // The message to show the blacklisted player upon connecting.
     string message = 3;
@@ -163,19 +157,19 @@ message BlacklistEntry {
 message SessionIdentifier {
     oneof identifier {
         // The id of the session to receive.
-        string id = 1;
+        string session_id = 1;
 
         // The player to receive the session for.
-        Player player = 2;
+        string player_id = 2;
     }
 }
 
 message Executor {
     oneof executor {
-        // The globally unique identifier of the executor (e.g. user id).
-        string id = 1;
+        // The globally unique identifier of the executor (e.g. user id or host name).
+        string identifier = 1;
 
         // The executing player.
-        Player player = 2;
+        string player_id = 2;
     }
 }
