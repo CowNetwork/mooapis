@@ -8,10 +8,19 @@ option java_multiple_files = true;
 
 // Service definition
 service IndigoService {
+    rpc ListRoles (ListRolesRequest) returns (ListRolesResponse) {
+    }
+
     rpc GetRole (GetRoleRequest) returns (GetRoleResponse) {
     }
 
     rpc InsertRole (InsertRoleRequest) returns (InsertRoleResponse) {
+    }
+
+    rpc UpdateRole (UpdateRoleRequest) returns (UpdateRoleResponse) {
+    }
+
+    rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse) {
     }
 
     rpc AddRolePermission (AddRolePermissionRequest) returns (AddRolePermissionResponse) {
@@ -40,6 +49,13 @@ service IndigoService {
 // actions with roles
 // ===================
 
+message ListRolesRequest {
+}
+
+message ListRolesResponse {
+    repeated Role roles = 1;
+}
+
 message GetRoleRequest {
     string role_id = 1;
 }
@@ -53,7 +69,23 @@ message InsertRoleRequest {
 }
 
 message InsertRoleResponse {
-    bool successful = 1;
+    Role inserted_role = 1;
+}
+
+message UpdateRoleRequest {
+    string role_id = 1;
+    Role role_data = 2;
+}
+
+message UpdateRoleResponse {
+    Role updated_role = 1;
+}
+
+message DeleteRoleRequest {
+    string role_id = 1;
+}
+
+message DeleteRoleResponse {
 }
 
 message AddRolePermissionRequest {
@@ -123,9 +155,25 @@ message RemoveUserPermissionResponse {
 }
 
 message Role {
+    // The id of the role, e.g. `minecraft_player`
     string id = 1;
+
+    // Priority of the role is used when multiple roles
+    // get assigned to a user and we have to determine which
+    // properties get inherited or overwritten by which roles.
     int32 priority = 2;
+
+    // Transient means that the role is simply used for inheritance purposes
+    // and will not overwrite any permissions from any role.
+    // The exception is when checking with two transient roles, than the priority
+    // will be used to determine which overwrites which.
     bool transient = 3;
+
+    // A hex color string (e.g. `4a2f30`) to set the general display color
+    // for this role across all systems (Minecraft network, webpages, ...).
     string color = 4;
+
+    // A list of permissions that are directly binded to this role.
+    // A permission is a dot seperated string which only contains [a-Z0-9\*].
     repeated string permissions = 5;
 }
