@@ -332,10 +332,10 @@ message SessionIdentifier {
 
 message Executor {
     enum Type {
-        CUSTOM = 0;
-        USER = 1;
-        PLAYER = 2;
-        SYSTEM = 3;
+        TYPE_CUSTOM = 0;
+        TYPE_USER = 1;
+        TYPE_PLAYER = 2;
+        TYPE_SYSTEM = 3;
     }
 
     // The type of the executor.
