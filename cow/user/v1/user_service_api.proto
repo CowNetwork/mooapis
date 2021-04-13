@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package cow.user.v1;
 
-import "cow/user/v1/types.proto";
-
 option go_package = "github.com/cownetwork/user/v1;user";
 option java_package = "network.cow.mooapis.user.v1";
 option java_multiple_files = true;
@@ -64,4 +62,25 @@ service UserService {
 
     // Returns the players assigned to this user.
     rpc GetUserPlayers(GetUserPlayersRequest) returns (GetUserPlayersResponse);
+}
+
+message User {
+    string id = 1;
+}
+
+message Player {
+    string id = 1; // random uuid
+    string reference_id = 2; // e.g. minecraft uuid
+    string reference_type = 3; // e.g. "minecraft"
+    string username = 4; // e.g. minecraft username
+}
+
+// The identifier used to determine which player to return.
+message PlayerIdentifier {
+    // The reference id of the corresponding source (e.g. the minecraft uuid).
+    string id = 1;
+    // The type of the reference/source id (e.g. "minecraft")
+    string type = 2;
+    // The username assigned to the reference/source account (e.g. the minecraft username).
+    optional string username = 3;
 }

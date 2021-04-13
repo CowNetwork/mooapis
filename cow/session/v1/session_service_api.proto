@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package cow.session.v1;
 
-import "cow/session/v1/types.proto";
-
 option go_package = "github.com/cownetwork/session/v1;session";
 option java_package = "network.cow.mooapis.session.v1";
 option java_multiple_files = true;
@@ -172,4 +170,177 @@ service SessionService {
 
     // revokes the blacklist entry of a player
     rpc RevokeBlacklistPlayer(RevokeBlacklistPlayerRequest) returns (RevokeBlacklistPlayerResponse);
+}
+
+message Session {
+    // Unique id of the session.
+    string id = 1;
+
+    // The player this session belongs to.
+    string player_id = 2;
+
+    // The current (or last) state of this session.
+    oneof state {
+        StateUnknown unknown = 3;
+        StateInitialized initialized = 4;
+        StateStopped stopped = 5;
+    }
+
+    string ip = 6;
+}
+
+// The session is in an unknown state.
+message StateUnknown {
+    // Nothing to see here.
+}
+
+// The session has successfully been initialized.
+message StateInitialized {
+    // Nothing to see here.
+}
+
+// The session has been stopped.
+message StateStopped {
+    // The reason why the session has been stopped.
+    oneof cause {
+        StopCauseUnknown unknown = 1;
+        StopCauseDisconnected disconnected = 2;
+        StopCauseMaintenance maintenance = 3;
+        StopCauseError error = 4;
+        StopCauseKicked kicked = 5;
+        StopCauseBanned banned = 6;
+        StopCauseBlacklisted blacklisted = 7;
+        StopCauseCustom custom = 8;
+    }
+}
+
+// The session has stopped because of unknown reasons.
+message StopCauseUnknown {
+    // Nothing to see here.
+}
+
+// The session stopped because the player disconnected or has been disconnected.
+message StopCauseDisconnected {
+    // Nothing to see here.
+}
+
+// The session stopped because of maintenance.
+message StopCauseMaintenance {
+    // Nothing to see here.
+}
+
+// The session stopped due to an error.
+message StopCauseError {
+    // The error message.
+    string message = 1;
+}
+
+// The session stopped because the player has been kicked.
+message StopCauseKicked {
+    // The underlying kick.
+    Kick kick = 1;
+}
+
+// The session stopped because the player is/has been banned.
+message StopCauseBanned {
+    // The underlying ban.
+    Ban ban = 1;
+}
+
+// The session stopped because the player is/has been blacklisted.
+message StopCauseBlacklisted {
+    // The blacklist entry.
+    BlacklistEntry entry = 1;
+}
+
+// The session stopped because of maintenance.
+message StopCauseCustom {
+    string message = 1;
+}
+
+message Ban {
+    // The unique identifier of the ban.
+    string id = 1;
+
+    // The banned player.
+    string player_id = 2;
+
+    // The reason of the ban.
+    string reason = 3;
+
+    // The unix timestamp of the ban.
+    uint64 banned_at = 4;
+
+    // The duration of this ban in seconds, starting from the banned_at timestamp.
+    int64 duration = 5;
+
+    // The initiator of the ban.
+    Executor executor = 6;
+
+    // The revoke of the ban, if there is one.
+    optional BanRevoke revoke = 7;
+}
+
+message BanRevoke {
+    // The unique identifier of the revoke.
+    string id = 1;
+
+    // The timestamp of the revoke.
+    uint64 revoked_at = 2;
+
+    // The initiator of the revoke.
+    Executor executor = 3;
+}
+
+message Kick {
+    // The unique identifier of the kick.
+    string id = 1;
+
+    // The kicked player.
+    string player_id = 2;
+
+    // The reason of the ban.
+    string reason = 3;
+
+    // The unix timestamp of the kick.
+    uint64 kicked_at = 4;
+
+    // The initiator of the kick.
+    Executor executor = 5;
+}
+
+message BlacklistEntry {
+    // The unique identifier of the entry.
+    string id = 1;
+
+    // The blacklisted player.
+    string player_id = 2;
+
+    // The message to show the blacklisted player upon connecting.
+    string message = 3;
+}
+
+message SessionIdentifier {
+    oneof identifier {
+        // The id of the session to receive.
+        string session_id = 1;
+
+        // The player to receive the session for.
+        string player_id = 2;
+    }
+}
+
+message Executor {
+    enum Type {
+        CUSTOM = 0;
+        USER = 1;
+        PLAYER = 2;
+        SYSTEM = 3;
+    }
+
+    // The type of the executor.
+    Type type = 1;
+
+    // The identifier based on the given type.
+    string id = 2;
 }
