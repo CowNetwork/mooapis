@@ -9,6 +9,8 @@ option java_multiple_files = true;
 message CreateSessionRequest {
     // The player to create the session for.
     string player_id = 1;
+    // The ip address the player connects with.
+    string ip = 2;
 }
 
 message CreateSessionResponse {

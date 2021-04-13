@@ -6,12 +6,20 @@ option go_package = "github.com/cownetwork/user/v1;user";
 option java_package = "network.cow.mooapis.user.v1";
 option java_multiple_files = true;
 
+message GetPlayerByIdRequest {
+    string player_id = 1;
+}
+
 message GetPlayerRequest {
     PlayerIdentifier identifier = 1;
 }
 
 message GetPlayerResponse {
     Player player = 1;
+}
+
+message GetPlayersByIdRequest {
+    repeated string player_ids = 1;
 }
 
 message GetPlayersRequest {
@@ -22,12 +30,9 @@ message GetPlayersResponse {
     repeated Player players = 1;
 }
 
-message GetPlayerUserRequest {
-    PlayerIdentifier identifier = 1;
-}
-
-message GetPlayerUserResponse {
-    User user = 1;
+message UpdatePlayerMetadataRequest {
+    string player_id = 1;
+    Metadata metadata = 2;
 }
 
 message GetUserRequest {
@@ -43,7 +48,7 @@ message GetUserPlayersRequest {
 }
 
 message GetUserPlayersResponse {
-    repeated Player players = 2;
+    repeated Player players = 1;
 }
 
 // Service definition
@@ -51,21 +56,31 @@ service UserService {
     // Returns the player or creates/updates it.
     rpc GetPlayer(GetPlayerRequest) returns (GetPlayerResponse);
 
+    // Returns the player or creates/updates it.
+    rpc GetPlayerById(GetPlayerByIdRequest) returns (GetPlayerResponse);
+
     // Returns the players or creates/updates them.
     rpc GetPlayers(GetPlayersRequest) returns (GetPlayersResponse);
 
-    // Returns the user this player is assigned to.
-    rpc GetPlayerUser(GetPlayerUserRequest) returns (GetPlayerUserResponse);
+    // Returns the players or creates/updates them.
+    rpc GetPlayersById(GetPlayersByIdRequest) returns (GetPlayersResponse);
 
     // Returns the user by id.
     rpc GetUser(GetUserRequest) returns (GetUserResponse);
 
     // Returns the players assigned to this user.
     rpc GetUserPlayers(GetUserPlayersRequest) returns (GetUserPlayersResponse);
+
+    // Returns the players assigned to this user.
+    rpc UpdatePlayerMetadata(UpdatePlayerMetadataRequest) returns (GetPlayerResponse);
 }
 
 message User {
+    // The unique identifier of the user.
     string id = 1;
+
+    // The metadata assigned to the user.
+    Metadata metadata = 2;
 }
 
 message Player {
@@ -73,6 +88,12 @@ message Player {
     string reference_id = 2; // e.g. minecraft uuid
     string reference_type = 3; // e.g. "minecraft"
     string username = 4; // e.g. minecraft username
+
+    // The underlying user.
+    User user = 5;
+
+    // The metadata assigned to the player.
+    Metadata metadata = 6;
 }
 
 // The identifier used to determine which player to return.
@@ -81,6 +102,9 @@ message PlayerIdentifier {
     string id = 1;
     // The type of the reference/source id (e.g. "minecraft")
     string type = 2;
-    // The username assigned to the reference/source account (e.g. the minecraft username).
-    optional string username = 3;
+}
+
+message Metadata {
+    // The locale this player uses.
+    string locale = 1;
 }
