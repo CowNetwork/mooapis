@@ -10,6 +10,10 @@ message GetPlayerByIdRequest {
     string player_id = 1;
 }
 
+message GetPlayerByIdResponse {
+    Player player = 1;
+}
+
 message GetPlayerRequest {
     PlayerIdentifier identifier = 1;
 }
@@ -20,6 +24,10 @@ message GetPlayerResponse {
 
 message GetPlayersByIdRequest {
     repeated string player_ids = 1;
+}
+
+message GetPlayersByIdResponse {
+    Player player = 1;
 }
 
 message GetPlayersRequest {
@@ -33,6 +41,10 @@ message GetPlayersResponse {
 message UpdatePlayerMetadataRequest {
     string player_id = 1;
     Metadata metadata = 2;
+}
+
+message UpdatePlayerMetadataResponse {
+    Player player = 1;
 }
 
 message GetUserRequest {
@@ -56,19 +68,23 @@ message UpdateUserMetadataRequest {
     Metadata metadata = 2;
 }
 
+message UpdateUserMetadataResponse {
+    User user = 1;
+}
+
 // Service definition
 service UserService {
     // Returns the player or creates/updates it.
     rpc GetPlayer(GetPlayerRequest) returns (GetPlayerResponse);
 
     // Returns the player or creates/updates it.
-    rpc GetPlayerById(GetPlayerByIdRequest) returns (GetPlayerResponse);
+    rpc GetPlayerById(GetPlayerByIdRequest) returns (GetPlayerByIdResponse);
 
     // Returns the players or creates/updates them.
     rpc GetPlayers(GetPlayersRequest) returns (GetPlayersResponse);
 
     // Returns the players or creates/updates them.
-    rpc GetPlayersById(GetPlayersByIdRequest) returns (GetPlayersResponse);
+    rpc GetPlayersById(GetPlayersByIdRequest) returns (GetPlayersByIdResponse);
 
     // Returns the user by id.
     rpc GetUser(GetUserRequest) returns (GetUserResponse);
@@ -77,10 +93,10 @@ service UserService {
     rpc GetUserPlayers(GetUserPlayersRequest) returns (GetUserPlayersResponse);
 
     // Updates the metadata and returns the player.
-    rpc UpdatePlayerMetadata(UpdatePlayerMetadataRequest) returns (GetPlayerResponse);
+    rpc UpdatePlayerMetadata(UpdatePlayerMetadataRequest) returns (UpdatePlayerMetadataResponse);
 
     // Updates the metadata and returns the user.
-    rpc UpdateUserMetadata(UpdateUserMetadataRequest) returns (GetUserResponse);
+    rpc UpdateUserMetadata(UpdateUserMetadataRequest) returns (UpdateUserMetadataResponse);
 }
 
 message User {
@@ -97,8 +113,8 @@ message Player {
     string reference_type = 3; // e.g. "minecraft"
     string username = 4; // e.g. minecraft username
 
-    // The underlying user.
-    User user = 5;
+    // The underlying user id.
+    string user_id = 5;
 
     // The metadata assigned to the player.
     Metadata metadata = 6;
