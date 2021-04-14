@@ -189,6 +189,12 @@ message Session {
     }
 
     string ip = 6;
+
+    // The unix timestamp of when the session started.
+    uint64 started_at = 7;
+
+    // The unix timestamp of when the session stopped.
+    optional uint64 stopped_at = 8;
 }
 
 // The session is in an unknown state.
@@ -252,7 +258,7 @@ message StopCauseBanned {
 // The session stopped because the player is/has been blacklisted.
 message StopCauseBlacklisted {
     // The blacklist entry.
-    BlacklistEntry entry = 1;
+    optional BlacklistEntry entry = 1;
 }
 
 // The session stopped because of maintenance.
@@ -320,6 +326,12 @@ message BlacklistEntry {
 
     // The message to show the blacklisted player upon connecting.
     string message = 3;
+
+    // The initiator of the blacklist entry.
+    Executor executor = 4;
+
+    // Whether the blacklist entry is active.
+    bool active = 5;
 }
 
 message SessionIdentifier {
@@ -344,5 +356,5 @@ message Executor {
     Type type = 1;
 
     // The identifier based on the given type.
-    string id = 2;
+    optional string id = 2;
 }
