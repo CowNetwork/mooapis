@@ -43,8 +43,8 @@ jobs:
         run: buf generate
       - name: Prepare Go repo
         run: |
-          chmod +x prepare-repository.sh "https://github.com/CowNetwork/mooapis-go.git" "./gen/go"
-          ./prepare-repository.sh
+          chmod +x prepare-repository.sh
+          ./prepare-repository.sh "https://github.com/CowNetwork/mooapis-go.git" "./gen/go"
           git diff-index --quiet HEAD || git commit -m "Generate Go files for $RELEASE_VERSION"
           git tag $RELEASE_VERSION
       - name: Push changes
@@ -83,8 +83,8 @@ jobs:
           ./apply-java-template.sh "./gen/java" "./template/java/" "./gen/java"
       - name: Prepare Java repo
         run: |
-          chmod +x prepare-repository.sh "https://github.com/CowNetwork/mooapis-java.git" "./gen/java"
-          ./prepare-repository.sh
+          chmod +x prepare-repository.sh
+          ./prepare-repository.sh "https://github.com/CowNetwork/mooapis-java.git" "./gen/java"
           git diff-index --quiet HEAD || git commit -m "Generate Java files for $RELEASE_VERSION"
           git tag $RELEASE_VERSION
       - name: Push changes
