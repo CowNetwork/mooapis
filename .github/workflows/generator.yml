@@ -43,12 +43,9 @@ jobs:
         run: buf generate
       - name: Prepare Go repo
         run: |
-          git clone https://github.com/CowNetwork/mooapis-go.git
-          cp -a ./gen/go/. ./mooapis-go/ 
-          cd ./mooapis-go/
-          git config --local user.email "machine@cow.network"
-          git config --local user.name "github-udder-machine"
-          git add .
+          chmod +x prepare-repository.sh
+          ./prepare-repository.sh "https://github.com/CowNetwork/mooapis-go.git" "./gen/go" "./out"
+          cd ./out/
           git diff-index --quiet HEAD || git commit -m "Generate Go files for $RELEASE_VERSION"
           git tag $RELEASE_VERSION
       - name: Push changes
@@ -56,7 +53,7 @@ jobs:
         with:
           github_token: ${{ secrets.UDDER_MACHINE_ACCESS_TOKEN }}
           branch: main
-          directory: ./mooapis-go
+          directory: ./out
           repository: cownetwork/mooapis-go
           tags: true
   generate-java:
@@ -87,19 +84,16 @@ jobs:
           ./apply-java-template.sh "./gen/java" "./template/java/" "./gen/java"
       - name: Prepare Java repo
         run: |
-          git clone https://github.com/CowNetwork/mooapis-java.git
-          cp -a ./gen/java/. ./mooapis-java/
-          cd ./mooapis-java/
-          git config --local user.email "machine@cow.network"
-          git config --local user.name "github-udder-machine"
-          git add .
-          git commit -m "Generate Java files for $RELEASE_VERSION"
+          chmod +x prepare-repository.sh
+          ./prepare-repository.sh "https://github.com/CowNetwork/mooapis-java.git" "./gen/java" "./out"
+          cd ./out/
+          git diff-index --quiet HEAD || git commit -m "Generate Java files for $RELEASE_VERSION"
           git tag $RELEASE_VERSION
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.UDDER_MACHINE_ACCESS_TOKEN  }}
           branch: main
-          directory: ./mooapis-java
+          directory: ./out
           repository: cownetwork/mooapis-java
           tags: true
