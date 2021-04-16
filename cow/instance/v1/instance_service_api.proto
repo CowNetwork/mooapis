@@ -3,18 +3,22 @@ syntax = "proto3";
 package cow.instance.v1;
 
 import "cow/instance/v1/types.proto";
+import "google/protobuf/struct.proto";
 
 option go_package = "github.com/cownetwork/instance/v1;instance";
 option java_package = "network.cow.mooapis.instance.v1";
 option java_multiple_files = true;
 
 message CreateInstanceRequest {
-    // Name the instance should have
-    string name = 1;
+    oneof instance {
+        // Information for the service about the template that 
+	// should be used to create the instance
+        TemplateInfo info = 1;    	
 
-    // The Kubernetes instance manifest or name of 
-    // a manifest template configured in the service
-    string manifest = 2;
+        // The Kubernetes instance manifest or name of 
+        // a manifest template configured in the service
+        google.protobuf.Struct manifest = 2;
+    }
 }
 
 message CreateInstanceResponse {
