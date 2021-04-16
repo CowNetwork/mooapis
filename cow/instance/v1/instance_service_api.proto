@@ -22,17 +22,17 @@ message CreateInstanceResponse {
     Instance instance = 1;
 }
 
-message DeleteInstanceRequest {
+message EndInstanceRequest {
     string id = 1;
 }
 
-message DeleteInstanceResponse {
-    // The instance deleted by the service
+message EndInstanceResponse {
+    // The instance marked as ended by the service
     Instance instance = 1;
 }
 
 message GetInstanceRequest {
-  string id = 1;
+    string id = 1;
 }
 
 message GetInstanceResponse {
@@ -46,8 +46,8 @@ service InstanceService {
     // Create creates a new instance in the cluster
     rpc Create(CreateInstanceRequest) returns (CreateInstanceResponse);
     
-    // Delete deletes an instance running in the cluster
-    rpc Delete(DeleteInstanceRequest) returns (DeleteInstanceResponse);
+    // End marks Instance as ended
+    rpc End(EndInstanceRequest) returns (EndInstanceResponse);
 
     // Get retrieves information about an existing instance
     rpc Get(GetInstanceRequest) returns (GetInstanceResponse);
