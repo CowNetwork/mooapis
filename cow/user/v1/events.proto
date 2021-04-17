@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package cow.user.v1;
+
+import "cow/user/v1/user_service_api.proto";
+
+option go_package = "github.com/cownetwork/user/v1;user";
+option java_package = "network.cow.mooapis.user.v1";
+option java_multiple_files = true;
+
+message UserMetadataUpdatedEvent {
+    string user_id = 1;
+    Metadata metadata = 2;
+}
+
+message PlayerMetadataUpdatedEvent {
+    string player_id = 1;
+    Metadata metadata = 2;
+}
