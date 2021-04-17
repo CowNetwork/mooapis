@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package cow.instance.v1;
 
+import "google/protobuf/struct.proto";
+
 option go_package = "github.com/cownetwork/instance/v1;instance";
 option java_package = "network.cow.mooapis.instance.v1";
 option java_multiple_files = true;
@@ -32,7 +34,7 @@ message Instance {
 message Metadata {
     // The currently observed state. The underlying application
     // that is running can define this state
-    string state = 1;
+    google.protobuf.Struct state = 1;
 
     // Players that are currently connected or have been connected to the instance
     repeated Player players = 2;
@@ -44,5 +46,13 @@ message Player {
 
     // Application specific metadata about the player.
     // The underlying application that is running defines this metadata field
-    string metadata = 2;
+    google.protobuf.Struct metadata = 2;
+}
+
+message TemplateInfo {
+    // The name of the instance template
+    string template_name = 1;
+
+    // The name the templated instance should have
+    string instance_name = 2;
 }
