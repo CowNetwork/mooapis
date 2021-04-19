@@ -8,44 +8,65 @@ option java_multiple_files = true;
 
 // Service definition
 service IndigoService {
-    rpc ListRoles (ListRolesRequest) returns (ListRolesResponse) {
-    }
+    // Checks if a given user account would succeed the permission
+    // check of given permissions. For that the roles and the custom
+    // permissions of the user will be used.
+    rpc HasPermission (HasPermissionRequest) returns (HasPermissionResponse);
 
-    rpc GetRole (GetRoleRequest) returns (GetRoleResponse) {
-    }
+    // List all existing roles.
+    rpc ListRoles (ListRolesRequest) returns (ListRolesResponse);
 
-    rpc InsertRole (InsertRoleRequest) returns (InsertRoleResponse) {
-    }
+    // Gets the role with specific name.
+    rpc GetRole (GetRoleRequest) returns (GetRoleResponse);
 
-    rpc UpdateRole (UpdateRoleRequest) returns (UpdateRoleResponse) {
-    }
+    // Inserts a new role, if it doesn't exist.
+    rpc InsertRole (InsertRoleRequest) returns (InsertRoleResponse);
 
-    rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse) {
-    }
+    // Updates a roles settings (like priority, ...).
+    rpc UpdateRole (UpdateRoleRequest) returns (UpdateRoleResponse);
 
-    rpc AddRolePermission (AddRolePermissionRequest) returns (AddRolePermissionResponse) {
-    }
+    // Deletes a role if it exists.
+    rpc DeleteRole (DeleteRoleRequest) returns (DeleteRoleResponse);
 
-    rpc RemoveRolePermission (RemoveRolePermissionRequest) returns (RemoveRolePermissionResponse) {
-    }
+    // Add multiple or one permission to given role, if the role exists.
+    rpc AddRolePermissions (AddRolePermissionsRequest) returns (AddRolePermissionsResponse);
 
-    rpc GetUserRoles (GetUserRolesRequest) returns (GetUserRolesResponse) {
-    }
+    // Remove multiple or one permission from given role, if the role exists.
+    rpc RemoveRolePermissions (RemoveRolePermissionsRequest) returns (RemoveRolePermissionsResponse);
 
-    rpc AddUserRole (AddUserRoleRequest) returns (AddUserRoleResponse) {
-    }
+    // Returns a user by account id.
+    rpc GetUser (GetUserRequest) returns (GetUserResponse);
 
-    rpc RemoveUserRole (RemoveUserRoleRequest) returns (RemoveUserRoleResponse) {
-    }
+    // Get all roles that are bound to given user.
+    rpc GetUserRoles (GetUserRolesRequest) returns (GetUserRolesResponse);
 
-    rpc AddUserPermission (AddUserPermissionRequest) returns (AddUserPermissionResponse) {
-    }
+    // Binds an existing role to the user.
+    rpc AddUserRoles (AddUserRolesRequest) returns (AddUserRolesResponse);
 
-    rpc RemoveUserPermission (RemoveUserPermissionRequest) returns (RemoveUserPermissionResponse) {
-    }
+    // Unbinds a role from the user.
+    rpc RemoveUserRoles (RemoveUserRolesRequest) returns (RemoveUserRolesResponse);
 
-    rpc HasUserPermission (HasUserPermissionRequest) returns (HasUserPermissionResponse) {
-    }
+    // Get all custom bound permissions of given user. 
+    rpc GetUserPermissions (GetUserPermissionsRequest) returns (GetUserPermissionsResponse);
+
+    // Binds custom permissions to given user.
+    rpc AddUserPermissions (AddUserPermissionsRequest) returns (AddUserPermissionsResponse);
+
+    // Unbinds custom permissions from given user.
+    rpc RemoveUserPermissions (RemoveUserPermissionsRequest) returns (RemoveUserPermissionsResponse);
+}
+
+// ===================
+// global
+// ===================
+
+message HasPermissionRequest {
+    string user_account_id = 1;
+    repeated string permissions = 2;
+}
+
+message HasPermissionResponse {
+    bool result = 1;
 }
 
 // ===================
@@ -91,27 +112,35 @@ message DeleteRoleRequest {
 message DeleteRoleResponse {
 }
 
-message AddRolePermissionRequest {
+message AddRolePermissionsRequest {
     string role_id = 1;
     repeated string permissions = 2;
 }
 
-message AddRolePermissionResponse {
+message AddRolePermissionsResponse {
     repeated string added_permissions = 1;
 }
 
-message RemoveRolePermissionRequest {
+message RemoveRolePermissionsRequest {
     string role_id = 1;
     repeated string permissions = 2;
 }
 
-message RemoveRolePermissionResponse {
+message RemoveRolePermissionsResponse {
     repeated string removed_permissions = 1;
 }
 
 // ===================
 // actions with users
 // ===================
+
+message GetUserRequest {
+    string user_account_id = 1;
+}
+
+message GetUserResponse {
+    User user = 1;
+}
 
 message GetUserRolesRequest {
     string user_account_id = 1;
@@ -121,49 +150,48 @@ message GetUserRolesResponse {
     repeated Role roles = 2;
 }
 
-message AddUserRoleRequest {
+message AddUserRolesRequest {
     string user_account_id = 1;
     repeated string role_ids = 2;
 }
 
-message AddUserRoleResponse {
+message AddUserRolesResponse {
     repeated string added_role_ids = 1;
 }
 
-message RemoveUserRoleRequest {
+message RemoveUserRolesRequest {
     string user_account_id = 1;
     repeated string role_ids = 2;
 }
 
-message RemoveUserRoleResponse {
+message RemoveUserRolesResponse {
     repeated string removed_role_ids = 1;
 }
 
-message AddUserPermissionRequest {
+message GetUserPermissionsRequest {
+    string user_account_id = 1;
+}
+
+message GetUserPermissionsResponse {
+    repeated string removed_role_ids = 1;
+}
+
+message AddUserPermissionsRequest {
     string user_account_id = 1;
     repeated string permissions = 2;
 }
 
-message AddUserPermissionResponse {
+message AddUserPermissionsResponse {
     repeated string added_permissions = 1;
 }
 
-message RemoveUserPermissionRequest {
+message RemoveUserPermissionsRequest {
     string user_account_id = 1;
     repeated string permissions = 2;
 }
 
-message RemoveUserPermissionResponse {
+message RemoveUserPermissionsResponse {
     repeated string removed_permissions = 1;
-}
-
-message HasUserPermissionRequest {
-    string user_account_id = 1;
-    repeated string permissions = 2;
-}
-
-message HasUserPermissionResponse {
-    bool result = 1;
 }
 
 message Role {
@@ -188,4 +216,15 @@ message Role {
     // A list of permissions that are directly binded to this role.
     // A permission is a dot seperated string which only contains [a-Z0-9\*].
     repeated string permissions = 5;
+}
+
+message User {
+    // The id of the user, can be a UUID or some other kind of string.
+    string account_id = 1;
+
+    // All roles that are bound to the user.
+    repeated Role roles = 2;
+
+    // All custom permissions that are bound to the user.
+    repeated string custom_permissions = 3;
 }

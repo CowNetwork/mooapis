@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package cow.indigo.v1;
+
+import "cow/indigo/v1/indigo.proto";
+
+option go_package = "github.com/cownetwork/indigo/v1;indigo";
+option java_package = "network.cow.mooapis.indigo.v1";
+option java_multiple_files = true;
+
+// Will be called, when:
+// - A custom permission gets bound/unbound from user
+// - A role changed, where the user was bound to
+// - A role got removed, where the user was bound to
+message UserPermissionUpdateEvent {
+    User user = 1;
+
+    enum Action {
+        PERM_ADDED = 0;
+        PERM_REMOVED = 1;
+        ROLE_ADDED = 2;
+        ROLE_REMOVED = 3;
+        ROLE_UPDATED = 4;
+    }
+    Action action = 2;
+}
+
+// Will be called when a Role got updated, deleted or added.
+message RoleUpdateEvent {
+    Role role = 1;
+    
+    enum Action {
+        ADDED = 0;
+        DELETED = 1;
+        UPDATED = 2;
+    }
+    Action action = 2;
+}
