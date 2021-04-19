@@ -16,11 +16,11 @@ message UserPermissionUpdateEvent {
     User user = 1;
 
     enum Action {
-        PERM_ADDED = 0;
-        PERM_REMOVED = 1;
-        ROLE_ADDED = 2;
-        ROLE_REMOVED = 3;
-        ROLE_UPDATED = 4;
+        ACTION_PERM_ADDED = 0;
+        ACTION_PERM_REMOVED = 1;
+        ACTION_ROLE_ADDED = 2;
+        ACTION_ROLE_REMOVED = 3;
+        ACTION_ROLE_UPDATED = 4;
     }
     Action action = 2;
 }
@@ -30,9 +30,9 @@ message RoleUpdateEvent {
     Role role = 1;
     
     enum Action {
-        ADDED = 0;
-        DELETED = 1;
-        UPDATED = 2;
+        ACTION_ADDED = 0;
+        ACTION_DELETED = 1;
+        ACTION_UPDATED = 2;
     }
     Action action = 2;
 }
