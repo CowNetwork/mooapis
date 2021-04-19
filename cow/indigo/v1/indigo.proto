@@ -173,7 +173,7 @@ message GetUserPermissionsRequest {
 }
 
 message GetUserPermissionsResponse {
-    repeated string removed_role_ids = 1;
+    repeated string permissions = 1;
 }
 
 message AddUserPermissionsRequest {
