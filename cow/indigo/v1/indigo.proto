@@ -43,6 +43,9 @@ service IndigoService {
 
     rpc RemoveUserPermission (RemoveUserPermissionRequest) returns (RemoveUserPermissionResponse) {
     }
+
+    rpc HasUserPermission (HasUserPermissionRequest) returns (HasUserPermissionResponse) {
+    }
 }
 
 // ===================
@@ -152,6 +155,15 @@ message RemoveUserPermissionRequest {
 
 message RemoveUserPermissionResponse {
     repeated string removed_permissions = 1;
+}
+
+message HasUserPermissionRequest {
+    string user_account_id = 1;
+    repeated string permissions = 2;
+}
+
+message HasUserPermissionResponse {
+    bool result = 1;
 }
 
 message Role {
