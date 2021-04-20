@@ -6,7 +6,8 @@ targetFolder="$3"
 git clone "$gitRepoUrl" "$targetFolder"
 
 # Remove all folders that do not start with a dot
-for dir in $(find "$targetFolder" -type d ! -regex '.*\..*'); do
+for dir in $(find "$targetFolder" -maxdepth 1 -mindepth 1 -type d ! -name '.*'); do
+    echo "Clear $dir .."
     rm -r "$dir"
 done
 
