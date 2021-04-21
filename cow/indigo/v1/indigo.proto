@@ -81,7 +81,7 @@ message ListRolesResponse {
 }
 
 message GetRoleRequest {
-    string role_id = 1;
+    RoleIdentifier role_id = 1;
 }
 
 message GetRoleResponse {
@@ -97,7 +97,7 @@ message InsertRoleResponse {
 }
 
 message UpdateRoleRequest {
-    string role_id = 1;
+    RoleIdentifier role_id = 1;
     Role role_data = 2;
 }
 
@@ -106,14 +106,14 @@ message UpdateRoleResponse {
 }
 
 message DeleteRoleRequest {
-    string role_id = 1;
+    RoleIdentifier role_id = 1;
 }
 
 message DeleteRoleResponse {
 }
 
 message AddRolePermissionsRequest {
-    string role_id = 1;
+    RoleIdentifier role_id = 1;
     repeated string permissions = 2;
 }
 
@@ -122,7 +122,7 @@ message AddRolePermissionsResponse {
 }
 
 message RemoveRolePermissionsRequest {
-    string role_id = 1;
+    RoleIdentifier role_id = 1;
     repeated string permissions = 2;
 }
 
@@ -152,20 +152,20 @@ message GetUserRolesResponse {
 
 message AddUserRolesRequest {
     string user_account_id = 1;
-    repeated string role_ids = 2;
+    repeated RoleIdentifier role_ids = 2;
 }
 
 message AddUserRolesResponse {
-    repeated string added_role_ids = 1;
+    repeated RoleIdentifier added_role_ids = 1;
 }
 
 message RemoveUserRolesRequest {
     string user_account_id = 1;
-    repeated string role_ids = 2;
+    repeated RoleIdentifier role_ids = 2;
 }
 
 message RemoveUserRolesResponse {
-    repeated string removed_role_ids = 1;
+    repeated RoleIdentifier removed_role_ids = 1;
 }
 
 message GetUserPermissionsRequest {
@@ -195,27 +195,33 @@ message RemoveUserPermissionsResponse {
 }
 
 message Role {
-    // The id of the role, e.g. `minecraft_player`
+    // The id of the role, i.e. a uuid
     string id = 1;
+
+    // Name of the role, e.g. `admin`.
+    string name = 2;
+
+    // Type of the role, e.g. `minecraft`
+    string type = 3;
 
     // Priority of the role is used when multiple roles
     // get assigned to a user and we have to determine which
     // properties get inherited or overwritten by which roles.
-    int32 priority = 2;
+    int32 priority = 4;
 
     // Transient means that the role is simply used for inheritance purposes
     // and will not overwrite any permissions from any role.
     // The exception is when checking with two transient roles, than the priority
     // will be used to determine which overwrites which.
-    bool transient = 3;
+    bool transient = 5;
 
     // A hex color string (e.g. `4a2f30`) to set the general display color
     // for this role across all systems (Minecraft network, webpages, ...).
-    string color = 4;
+    string color = 6;
 
     // A list of permissions that are directly binded to this role.
     // A permission is a dot seperated string which only contains [a-Z0-9\*].
-    repeated string permissions = 5;
+    repeated string permissions = 7;
 }
 
 message User {
@@ -227,4 +233,16 @@ message User {
 
     // All custom permissions that are bound to the user.
     repeated string custom_permissions = 3;
+}
+
+message RoleIdentifier {
+    oneof id {
+        string uuid = 1;
+        RoleNameIdentifier name_id = 2;
+    }
+}
+
+message RoleNameIdentifier {
+    string name = 1;
+    string type = 2;
 }
