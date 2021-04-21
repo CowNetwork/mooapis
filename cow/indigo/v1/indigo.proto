@@ -156,7 +156,7 @@ message AddUserRolesRequest {
 }
 
 message AddUserRolesResponse {
-    repeated RoleIdentifier added_role_ids = 1;
+    repeated string added_role_ids = 1;
 }
 
 message RemoveUserRolesRequest {
@@ -165,7 +165,7 @@ message RemoveUserRolesRequest {
 }
 
 message RemoveUserRolesResponse {
-    repeated RoleIdentifier removed_role_ids = 1;
+    repeated string removed_role_ids = 1;
 }
 
 message GetUserPermissionsRequest {
