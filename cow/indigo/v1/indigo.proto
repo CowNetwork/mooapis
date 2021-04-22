@@ -103,16 +103,16 @@ message UpdateRoleRequest {
     // Used to determine which fields to use from role_data
     enum FieldMask {
         // Includes all other fieldmasks
-        ALL = 0;
+        FIELD_MASK_ALL = 0;
 
         // Includes all other fieldmasks except PERMISSIONS
-        ALL_PROPERTIES = 1;
-        NAME = 2;
-        TYPE = 3;
-        PRIORITY = 4;
-        TRANSIENCE = 5;
-        COLOR = 6;
-        PERMISSIONS = 7;
+        FIELD_MASK_ALL_PROPERTIES = 1;
+        FIELD_MASK_NAME = 2;
+        FIELD_MASK_TYPE = 3;
+        FIELD_MASK_PRIORITY = 4;
+        FIELD_MASK_TRANSIENCE = 5;
+        FIELD_MASK_COLOR = 6;
+        FIELD_MASK_PERMISSIONS = 7;
     }
     repeated FieldMask field_masks = 3;
 }
