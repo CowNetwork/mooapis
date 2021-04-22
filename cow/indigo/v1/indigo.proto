@@ -99,6 +99,22 @@ message InsertRoleResponse {
 message UpdateRoleRequest {
     RoleIdentifier role_id = 1;
     Role role_data = 2;
+
+    // Used to determine which fields to use from role_data
+    enum FieldMask {
+        // Includes all other fieldmasks
+        ALL = 0;
+
+        // Includes all other fieldmasks except PERMISSIONS
+        ALL_PROPERTIES = 1;
+        NAME = 2;
+        TYPE = 3;
+        PRIORITY = 4;
+        TRANSIENCE = 5;
+        COLOR = 6;
+        PERMISSIONS = 7;
+    }
+    repeated FieldMask field_masks = 3;
 }
 
 message UpdateRoleResponse {
