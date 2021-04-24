@@ -9,6 +9,10 @@ option go_package = "github.com/cownetwork/instance/v1;instance";
 option java_package = "network.cow.mooapis.instance.v1";
 option java_multiple_files = true;
 
+//
+// SERVICE RPC
+//
+
 message CreateInstanceRequest {
     oneof instance {
         // Information for the service about the template that 
@@ -55,4 +59,32 @@ service InstanceService {
 
     // Get retrieves information about an existing instance
     rpc Get(GetInstanceRequest) returns (GetInstanceResponse);
+}
+
+//
+// EVENTS
+//
+
+// InstanceStartedEvent will be fired when a new Instance has been started.
+message InstanceStartedEvent {
+    // The instance started    
+    Instance instance = 1;
+}
+
+// InstanceEndedEvent will be fired when a currently running Instance has ended.
+message InstanceEndedEvent {
+    // The instance ended
+    Instance instance = 1;
+}
+
+// InstanceStateChangedEvent will be fired when the state of an Instance changed.
+message InstanceStateChangedEvent {
+    // The Instance affected by state change
+    Instance instance = 1;
+
+    // The new state of the Instance
+    google.protobuf.Struct new_state = 2;
+
+    // The previous state of the Instance
+    google.protobuf.Struct old_state = 3;
 }
