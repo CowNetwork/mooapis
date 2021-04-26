@@ -30,6 +30,15 @@ message GetPlayersByIdResponse {
     repeated Player players = 1;
 }
 
+message GetPlayerByNameRequest {
+    string reference_type = 1;
+    string reference_id = 2;
+}
+
+message GetPlayerByNameResponse {
+    Player player = 1;
+}
+
 message GetPlayersRequest {
     repeated PlayerIdentifier identifiers = 1;
 }
@@ -77,8 +86,11 @@ service UserService {
     // Returns the player or creates/updates it.
     rpc GetPlayer(GetPlayerRequest) returns (GetPlayerResponse);
 
-    // Returns the player or creates/updates it.
+    // Returns the player.
     rpc GetPlayerById(GetPlayerByIdRequest) returns (GetPlayerByIdResponse);
+
+    // Returns the player.
+    rpc GetPlayerByName(GetPlayerByNameRequest) returns (GetPlayerByNameResponse);
 
     // Returns the players or creates/updates them.
     rpc GetPlayers(GetPlayersRequest) returns (GetPlayersResponse);
