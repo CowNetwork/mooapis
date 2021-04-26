@@ -31,8 +31,8 @@ message GetPlayersByIdResponse {
 }
 
 message GetPlayerByNameRequest {
-    string reference_type = 1;
-    string reference_id = 2;
+    string type = 1;
+    string name = 2;
 }
 
 message GetPlayerByNameResponse {
@@ -61,6 +61,14 @@ message GetUserRequest {
 }
 
 message GetUserResponse {
+    User user = 1;
+}
+
+message GetUserByNameRequest {
+    string name = 1;
+}
+
+message GetUserByNameResponse {
     User user = 1;
 }
 
@@ -100,6 +108,9 @@ service UserService {
 
     // Returns the user by id.
     rpc GetUser(GetUserRequest) returns (GetUserResponse);
+
+    // Returns the player.
+    rpc GetUserByName(GetUserByNameRequest) returns (GetUserByNameResponse);
 
     // Returns the players assigned to this user.
     rpc GetUserPlayers(GetUserPlayersRequest) returns (GetUserPlayersResponse);
