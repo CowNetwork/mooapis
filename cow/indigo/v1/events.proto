@@ -20,7 +20,6 @@ message UserPermissionUpdateEvent {
         ACTION_PERM_REMOVED = 1;
         ACTION_ROLE_ADDED = 2;
         ACTION_ROLE_REMOVED = 3;
-        ACTION_ROLE_UPDATED = 4;
     }
     Action action = 2;
 }
